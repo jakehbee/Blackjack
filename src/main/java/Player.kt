@@ -1,10 +1,18 @@
 package com.finn.blackjack
 
 open class Player(val name: String,
-                  val limit: Int,
+                  var limit: Int,
                   val hand: MutableList<Card>) {
 
-    fun hasBlackjack() = (this.hand.sumBy { it.value } == 21)
+    fun handValue() = this.hand.sumBy { it.value }
+
+    fun hasBlackjack() = (handValue() == 21)
+
+    fun hasBust() = (handValue() > 21)
+
+    fun requestCard() {
+        Dealer.dealTo(this)
+    }
 
 
 }
