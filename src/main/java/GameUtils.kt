@@ -1,16 +1,17 @@
 package com.finn.blackjack
 
+import org.apache.commons.io.FilenameUtils
 import java.io.File
-import java.nio.file.Path
+
 
 class GameUtils {
 
     companion object {
         const val DEFAULT_FILE_PATH = "target/deck.txt"
 
-        fun getCards(): MutableList<String> {
+        fun validCardValues(): MutableList<String> {
+            val validValues = mutableListOf<String>()
             var cardVal: String
-            val deck = mutableListOf<String>()
             for (a in 0..3) {
                 for (i in 1..13) {
                     cardVal = when (i) {
@@ -20,27 +21,37 @@ class GameUtils {
                         13 -> "K"
                         else -> i.toString()
                     }
-                    deck.add("${Deck.Suit.values()[a]}$cardVal")
+                    validValues.add("${Card.Suit.values()[a]}$cardVal")
                 }
             }
-            return deck
+            return validValues
+        }
+
+
+        fun readGameFileToCardList(filePath: String? = DEFAULT_FILE_PATH): MutableList<Card> { //mac and pc?
+            val gameFile = File(FilenameUtils.normalize(filePath))
+            val fileValues = gameFile.readText().split(",")
+            val cardList = mutableListOf<Card>()
+
+            fileValues.forEach {
+                val cardName = it.trim()
+                if (validCardValues().contains(cardName))
+                    cardList.add(cardName.toCard())
+            }
+            return cardList
         }
     }
 
-    fun readGameFileToCardList(filePath: String? = DEFAULT_FILE_PATH): MutableList<String> { //mac and pc
-        val gameFile = File(filePath)
-        val fileValues = gameFile.readText().split(",")
-        val cardList = mutableListOf<String>()
-        val validCardList = getCards()
 
-        fileValues.forEach {
-            val cardName = it.trim()
-            if (validCardList.contains(cardName))
-                cardList.add(cardName)
-        }
-        return cardList
+}
 
+private fun String.toCard(): Card {
+    val suit = Card.Suit.valueOf(this.substring(0, 1))
+    val value = when (val subStr = this.substring(1)) {
+        "A" -> 11
+        "J", "Q", "K" -> 10
+        else -> subStr.toInt()
     }
 
-
+    return Card(this, value, suit)
 }

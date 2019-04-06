@@ -1,26 +1,29 @@
 package test.java
 
+import com.finn.blackjack.Card
 import com.finn.blackjack.GameUtils
 
-fun MutableList<String>.isValidDeck(validDeck: MutableList<String>? = GameUtils.getCards()): Boolean {
-    this.forEach {
-        if(!validDeck!!.contains(it)){
-            return false
-        }
-    }
-    return true
 
-}
 
 object TestUtils{
 
-         fun writeNormalDeckToFile() = BlackjackTest.file.writeText(GameUtils.getCards().joinToString(", "))
+         fun writeNormalDeckToFile() = BlackjackTest.file.writeText(GameUtils.validCardValues().joinToString(", "))
 
          fun writeInvalidDeckToFile() {
-            val cards = GameUtils.getCards()
+            val cards = GameUtils.validCardValues()
             cards.addAll(listOf("J30", "P11", "X0", "JC"))
             BlackjackTest.file.writeText(cards.joinToString(","))
         }
+
+    fun isValidDeck(cardList: MutableList<String>): Boolean {
+        cardList.forEach {
+            if (!GameUtils.validCardValues().contains(it)) {
+                return false
+            }
+        }
+        return true
+
+    }
 
 
 

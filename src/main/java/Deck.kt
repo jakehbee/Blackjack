@@ -1,12 +1,14 @@
 package com.finn.blackjack
 
 class Deck {
-    val cards = listOf<Card>()
+    val cards = mutableListOf<Card>()
 
-
-    val values = listOf(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11)
-
-    enum class Suit { H, S, D, C }
 }
 
-class Card(value: Int, suit: Deck.Suit)
+class Card(val name:String,val value: Int, val suit: Suit){
+
+    enum class Suit { H, S, D, C } //todo: suit is useless, remove.
+}
+
+fun Deck.shuffle() = this.cards.shuffle()
+

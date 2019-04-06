@@ -1,7 +1,18 @@
 package com.finn.blackjack
 
-class Game{
+class Game {
 
 
-    fun newGame(){}
+
+
+
+     fun startGame() {
+        setUp()
+       deal()
+         
+    }
+
+    fun setUp() {
+        GameUtils.readGameFileToCardList()
+    }
 }
