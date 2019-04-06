@@ -10,5 +10,8 @@ class Card(val name:String,val value: Int, val suit: Suit){
     enum class Suit { H, S, D, C } //todo: suit is useless, remove.
 }
 
-fun Deck.shuffle() = this.cards.shuffle()
+fun Deck.shuffle() {
+    return this.cards.shuffle()
+}
+
 

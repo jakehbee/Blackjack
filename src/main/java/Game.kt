@@ -1,18 +1,16 @@
 package com.finn.blackjack
 
-class Game {
+import com.finn.blackjack.GameUtils.Companion.checkBlackjack
 
+object Game {
+    val deck: Deck = GameUtils.readGameFileToCardList()
+    var winner: Player? =null
 
-
-
-
-     fun startGame() {
-        setUp()
-       deal()
-         
+    fun startGame() {
+        Dealer.shuffleDeck()
+        Dealer.deal()
+        checkBlackjack()
     }
 
-    fun setUp() {
-        GameUtils.readGameFileToCardList()
-    }
+
 }

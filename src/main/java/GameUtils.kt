@@ -5,7 +5,6 @@ import java.io.File
 
 
 class GameUtils {
-
     companion object {
         const val DEFAULT_FILE_PATH = "target/deck.txt"
 
@@ -28,20 +27,26 @@ class GameUtils {
         }
 
 
-        fun readGameFileToCardList(filePath: String? = DEFAULT_FILE_PATH): MutableList<Card> { //mac and pc?
+        fun readGameFileToCardList(filePath: String? = DEFAULT_FILE_PATH): Deck { //mac and pc?
             val gameFile = File(FilenameUtils.normalize(filePath))
             val fileValues = gameFile.readText().split(",")
-            val cardList = mutableListOf<Card>()
+            val deck = Deck()
 
             fileValues.forEach {
                 val cardName = it.trim()
                 if (validCardValues().contains(cardName))
-                    cardList.add(cardName.toCard())
+                    deck.cards.add(cardName.toCard())
             }
-            return cardList
+            return deck
+        }
+
+        fun checkBlackjack()
+        {
+           if(Sam.hasBlackjack()) {
+               Game.winner =Sam
+           }
         }
     }
-
 
 }
 
