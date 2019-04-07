@@ -12,7 +12,7 @@ object Game {
     private lateinit var players: MutableList<Player>
 
     fun setUp(filePath: String? = null) {
-        val gameFile = filePath ?: "${DEFAULT_DIR}normalDeck.txt"
+        val gameFile = filePath?: "${DEFAULT_DIR}normalDeck.txt"
         this.deck = readGameFileToDeck(gameFile)
         players = mutableListOf(Sam(), Dealer())
     }

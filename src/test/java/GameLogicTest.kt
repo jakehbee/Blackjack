@@ -11,6 +11,7 @@ import com.finn.blackjack.GameLogic.Companion.playBlackjack
 import org.hamcrest.CoreMatchers
 import org.hamcrest.CoreMatchers.equalTo
 import org.hamcrest.MatcherAssert.assertThat
+import org.junit.After
 import org.junit.Before
 import org.junit.Test
 import test.java.TestUtils.handWithValue
@@ -19,6 +20,11 @@ class GameLogicTest {
 
     @Before
     fun setup() = Game.setUp()
+
+    @After
+    fun tearDown(){
+        Game.winner = null //test isolation issue. dealer wins from previous test
+    }
 
 
     @Test //todo: delete

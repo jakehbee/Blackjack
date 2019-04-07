@@ -28,14 +28,15 @@ class GameUtils {
 
         fun readGameFileToDeck(filePath: String): Deck {
             var deck = Deck()
+            val fileValues:List<String>
+            deck.cards = mutableListOf()
             val defaultDeck = "${DEFAULT_DIR}normalDeck.txt"
             if (!File(filePath).isFile) {
-                deck = readGameFileToDeck(defaultDeck)
+                fileValues = validCardValues()
             } else {
                 val gameFile = File(FilenameUtils.normalize(filePath))// Mac/PC
-                val fileValues = gameFile.readText().split(",", "\"")
-                deck.cards = mutableListOf()
-
+                fileValues = gameFile.readText().split(",", "\"")
+            }
                 fileValues.forEach {
                     val cardName = it.trim().toUpperCase()
                     if (validCardValues().contains(cardName)) {
@@ -45,8 +46,7 @@ class GameUtils {
                 if (deck.cards.sumBy { it.value } < 42) {//Possibility that no player can win
                     deck = readGameFileToDeck(defaultDeck)
                 }
-            }
             return deck
         }
+        }
     }
-}
