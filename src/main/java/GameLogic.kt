@@ -1,6 +1,8 @@
 package com.finn.blackjack
 
 import com.finn.blackjack.Game.dealer
+import com.finn.blackjack.Game.gameRound
+import com.finn.blackjack.Game.incrementRound
 import com.finn.blackjack.Game.sam
 
 
@@ -15,38 +17,40 @@ class GameLogic {
                 continueGame()
                 checkForWinner()
             }
+           val loser =  when(Game.winner){
+                sam() -> dealer()
+               else -> sam()
+
+            }
             val name = Game.winner!!.name
             val hand = Game.winner!!.hand.makePretty()
-            println("$name $hand")
-            println("sam hand value ${sam().handValue()}")
-            println("dealer hand value ${dealer().handValue()}")
+            println("$name")
+            println("$name: $hand")
+            println("${loser.name}: ${loser.hand.makePretty()}")
         }
 
         private fun continueGame() {
+            incrementRound()
             sam().decideMove()
             checkForWinner()
             dealer().decideMove()
-            Game.round += 1
         }
-
-
 
         fun checkForWinner() {
             val samWinConditions = listOf(
-                    dealer().hasBust(),
+                    dealer().hasBust() && dealer().handValue() != 22 && sam().handValue() != 22 && gameRound() != 0,
                     sam().hasBlackjack(),
-                    (sam().hasBlackjack() && dealer().hasBlackjack() && Game.round == 0))
+                    (sam().hasBlackjack() && dealer().hasBlackjack() && gameRound() == 0))
 
             val dealerWinConditions = listOf(
                     sam().hasBust(),
                     dealer().hasBlackjack(),
-                    (sam().handValue() == 22 && dealer().handValue() == 22)
-
+                    (sam().handValue() == 22 && dealer().handValue() == 22 && Game.round == 0)
             )
 
-            Game.winner =when{
-                samWinConditions.atLeastOneBooleanConditionTrue() ->sam()
-                dealerWinConditions.atLeastOneBooleanConditionTrue() ->dealer()
+            Game.winner = when {
+                samWinConditions.atLeastOneBooleanConditionTrue() -> sam()
+                dealerWinConditions.atLeastOneBooleanConditionTrue() -> dealer()
                 else -> null
             }
 
@@ -56,37 +60,20 @@ class GameLogic {
                     Game.winner == null
             )
 
-
-
             //Escaping a stalemate
             if (stalemateConditions.allBooleanConditionsTrue()) {
-                suddenDeath()
-            }
-        }
-
-        private fun suddenDeath() {
-            sam().hand.clear()
-            dealer().hand.clear()
-            sam().requestCard()
-            dealer().requestCard()
-
-            when {
-                (sam().handValue() > dealer().handValue()) -> Game.winner = sam()
-                (dealer().handValue() > sam().handValue()) -> Game.winner = dealer()
-                else -> suddenDeath()
+                sam().limit = 21
             }
         }
     }
 }
 
-fun String.parseValue(): Pair<Int, Card.Suit> {//Splits string values into suit and value
-    val suit = Card.Suit.valueOf(this.substring(0, 1))
-    val value = when (val subStr = this.substring(1)) {
+fun String.parseValue(): Int {//Splits string values into a pair of suit and value
+    return when (val subStr = substring(1).toUpperCase()) {
         "A" -> 11
         "J", "Q", "K" -> 10
         else -> subStr.toInt()
     }
-    return Pair(value, suit)
 }
 
 fun List<Boolean>.allBooleanConditionsTrue(): Boolean {

@@ -15,7 +15,6 @@ class Sam : Player(name = "sam", limit = 17, hand = mutableListOf()) {
         )
 
         if (continueConditions.allBooleanConditionsTrue()) {
-            println("Sam continues ${sam().handValue()}")
             sam().requestCard()
             decideMove()
         } else {

@@ -13,6 +13,4 @@ open class Player(val name: String,
     fun requestCard() =Dealer.dealTo(this)
 
     open fun decideMove() {}
-
-
 }

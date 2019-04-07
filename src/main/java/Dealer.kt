@@ -7,7 +7,6 @@ import com.finn.blackjack.Game.sam
 class Dealer : Player(name = "dealer", limit = 0, hand = mutableListOf()) {
 
     companion object {
-
         fun deal() {
             for (i in 0..1) {
                 dealTo(sam())
@@ -20,10 +19,7 @@ class Dealer : Player(name = "dealer", limit = 0, hand = mutableListOf()) {
         private fun drawCard()= deck().cards.removeAt(0)
 
         fun shuffleDeck()=deck().shuffle()
-
-
     }
-
     override fun decideMove() {
         dealer().limit = sam().handValue()
 
@@ -34,7 +30,6 @@ class Dealer : Player(name = "dealer", limit = 0, hand = mutableListOf()) {
                 !sam().hasBlackjack())
 
         if (continueConditions.allBooleanConditionsTrue()) {
-            println("Dealer continues ${dealer().handValue()}")
             dealer().requestCard()
             decideMove()
         } else {

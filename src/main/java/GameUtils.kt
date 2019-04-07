@@ -1,15 +1,14 @@
 package com.finn.blackjack
 
+import com.finn.blackjack.Game.DEFAULT_DIR
 import org.apache.commons.io.FilenameUtils
 import java.io.File
 
 class GameUtils {
 
     companion object {
-        const val DEFAULT_DIR = "src/main/resources/" //TODO, extract to game, so we can just set file name here
 
-
-        fun validCardValues(): MutableList<String> {//generate all card values
+        fun validCardValues(): MutableList<String> {//generate all cards in a deck
             val validValues = mutableListOf<String>()
             var cardVal: String
             for (a in 0..3) {
@@ -27,25 +26,26 @@ class GameUtils {
             return validValues
         }
 
-
         fun readGameFileToDeck(filePath: String): Deck {
-            val gameFile = File(FilenameUtils.normalize(filePath))//hope to resolve mac/pc file separator difference
-            val fileValues = gameFile.readText().split(",", "\"")
-
-
             var deck = Deck()
-            deck.cards = mutableListOf()
+            val defaultDeck = "${DEFAULT_DIR}normalDeck.txt"
+            if (!File(filePath).isFile) {
+                deck = readGameFileToDeck(defaultDeck)
+            } else {
+                val gameFile = File(FilenameUtils.normalize(filePath))// Mac/PC
+                val fileValues = gameFile.readText().split(",", "\"")
+                deck.cards = mutableListOf()
 
-            fileValues.forEach {
-                val cardName = it.trim()
-                if (validCardValues().contains(cardName)) {
-                    deck.cards.add(Card(name = cardName))
+                fileValues.forEach {
+                    val cardName = it.trim().toUpperCase()
+                    if (validCardValues().contains(cardName)) {
+                        deck.cards.add(Card(name = cardName))
+                    }
+                }
+                if (deck.cards.sumBy { it.value } < 42) {//Possibility that no player can win
+                    deck = readGameFileToDeck(defaultDeck)
                 }
             }
-            if (fileValues.size < 4) {
-               deck=  readGameFileToDeck("${DEFAULT_DIR}normalDeck.txt")
-            }
-
             return deck
         }
     }

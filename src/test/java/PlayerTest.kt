@@ -1,81 +1,75 @@
 package test.java
 
 import com.finn.blackjack.Game
-import com.finn.blackjack.GameUtils
-import org.hamcrest.CoreMatchers
-import org.hamcrest.MatcherAssert
+import com.finn.blackjack.Game.dealer
+import com.finn.blackjack.Game.sam
+import com.finn.blackjack.GameLogic.Companion.checkForWinner
+import org.hamcrest.CoreMatchers.equalTo
+import org.hamcrest.MatcherAssert.assertThat
 import org.junit.Before
 import org.junit.Test
 
-class PlayerTest{
+class PlayerTest {
 
     @Before
-    fun setup() {
-        Game.setUp("${GameUtils.DEFAULT_DIR}normalDeck.txt")
-    }
+    fun setup() = Game.setUp()
 
     @Test
     fun samHasBust_gameEndsWithNoMoreCardsDrawn() {
-        Game.sam().hand.addAll(TestUtils.handWithValue(17))
+        sam().hand.addAll(TestUtils.handWithValue(23))
+        dealer().hand.addAll(TestUtils.handWithValue(12))
+        checkForWinner()
+        assertThat(Game.winner!!.name, equalTo("dealer"))
     }
 
     @Test
     fun samHasBlackjack_samStops() {
-        Game.sam().hand.addAll(TestUtils.handWithValue(21))
-        Game.sam().decideMove()
+        sam().hand.addAll(TestUtils.handWithValue(21))
+        sam().decideMove()
     }
 
     @Test
     fun samHitsLimit_samStops() {
-        Game.sam().hand.addAll(TestUtils.handWithValue(17))
-        Game.sam().decideMove()
-        MatcherAssert.assertThat(Game.sam().hand.size, CoreMatchers.equalTo(2))
+        sam().hand.addAll(TestUtils.handWithValue(17))
+        sam().decideMove()
+        assertThat(sam().hand.size, equalTo(2))
     }
 
     @Test
     fun dealerHasBlackjack_dealerStops() {
-        Game.sam().hand.addAll(TestUtils.handWithValue(21))
-        Game.dealer().decideMove()
-        MatcherAssert.assertThat(Game.dealer().hand.size, CoreMatchers.equalTo(0))
+        sam().hand.addAll(TestUtils.handWithValue(21))
+        dealer().decideMove()
+        assertThat(dealer().hand.size, equalTo(0))
     }
 
     @Test
-    fun dealerHitsLimit_dealerStops() {
-        Game.sam().hand.addAll(TestUtils.handWithValue(4))
-        Game.dealer().hand.addAll(TestUtils.handWithValue(5))
-        Game.sam().requestCard()
-        MatcherAssert.assertThat(Game.dealer().hand.size, CoreMatchers.equalTo(2))
-
+    fun dealerCardsHigherThanSam_dealerStops() {
+        sam().hand.addAll(TestUtils.handWithValue(4))
+        dealer().hand.addAll(TestUtils.handWithValue(5))
+        dealer().decideMove()
+        assertThat(dealer().hand.size, equalTo(2))
     }
 
     @Test
     fun samScoreBelowLimit_samRequestsCard() {
-        Game.sam().hand.addAll(TestUtils.handWithValue(5))
-        Game.sam().decideMove()
-        MatcherAssert.assertThat(Game.sam().hand.size, CoreMatchers.equalTo(4)) //always 4, deck order is the same
+        sam().hand.addAll(TestUtils.handWithValue(5))
+        sam().decideMove()
+        assertThat(sam().hand.size, equalTo(4)) //always 4, deck order is the same
     }
 
     @Test
     fun playersHaveEqualHandValue_dealerContinues() {
-        Game.sam().hand.addAll(TestUtils.handWithValue(11))
-        Game.dealer().hand.addAll(TestUtils.handWithValue(11))
-        Game.dealer().decideMove()
-        MatcherAssert.assertThat(Game.dealer().hand.size, CoreMatchers.equalTo(3))
-    }
-
-    @Test
-    fun samHasBlackjack_dealerDoesNot() {
-        Game.sam().hand.addAll(TestUtils.handWithValue(21))
-        Game.dealer().hand.addAll(TestUtils.handWithValue(5))
-        MatcherAssert.assertThat(Game.sam().hasBlackjack(), CoreMatchers.equalTo(true))
-        MatcherAssert.assertThat(Game.dealer().hasBlackjack(), CoreMatchers.equalTo(false))
+        sam().hand.addAll(TestUtils.handWithValue(11))
+        dealer().hand.addAll(TestUtils.handWithValue(11))
+        dealer().decideMove()
+        assertThat(dealer().hand.size, equalTo(3))
     }
 
     @Test
     fun dealerHasHigherScoreThanSam_dealerStops() {
-        Game.dealer().hand.addAll(TestUtils.handWithValue(9))
-        Game.sam().hand.addAll(TestUtils.handWithValue(6))
-        Game.dealer().decideMove()
-        MatcherAssert.assertThat(Game.dealer().hand.size, CoreMatchers.equalTo(2))
+        dealer().hand.addAll(TestUtils.handWithValue(9))
+        sam().hand.addAll(TestUtils.handWithValue(6))
+        dealer().decideMove()
+        assertThat(dealer().hand.size, equalTo(2))
     }
 }
