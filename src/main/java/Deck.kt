@@ -1,12 +1,16 @@
 package com.finn.blackjack
 
+import com.finn.blackjack.GameUtils.Companion.readGameFileToDeck
+
+
 class Deck {
-    val cards = mutableListOf<Card>()
+  lateinit var cards: MutableList<Card>
 }
 
 class Card(val name: String) {
     private val parsedCardValues = name.parseValue()
     val value = parsedCardValues.first
+
     enum class Suit { H, S, D, C }
 }
 

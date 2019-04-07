@@ -6,7 +6,31 @@ import java.io.File
 
 class GameUtils {
     companion object {
-        const val DEFAULT_FILE_PATH = "target/deck.txt"
+        const val DEFAULT_DIR = "src/main/resources/"
+
+        fun playBlackjack() {
+            Dealer.shuffleDeck()
+            Dealer.deal()
+
+            while (Game.winner == null) {
+                continueGame()
+                checkForWinner()
+            }
+            val name = Game.winner!!.name
+            val hand = Game.winner!!.hand.makePretty()
+            println("$name $hand")
+        }
+
+        private fun continueGame() {
+            Sam.decideMove()
+            Dealer.decideMove()
+            Game.round += 1
+
+        }
+
+    fun MutableList<Card>.makePretty(): String {
+        return this.joinToString { it.name }
+    }
 
         fun validCardValues(): MutableList<String> {//generate all card values
             val validValues = mutableListOf<String>()
@@ -27,10 +51,11 @@ class GameUtils {
         }
 
 
-        fun readGameFileToCardList(filePath: String? = DEFAULT_FILE_PATH): Deck {
+        fun readGameFileToDeck(filePath: String? = DEFAULT_DIR): Deck {
             val gameFile = File(FilenameUtils.normalize(filePath))//hope to resolve mac/pc file separator difference
             val fileValues = gameFile.readText().split(",")
             val deck = Deck()
+            deck.cards = mutableListOf()
 
             fileValues.forEach {
                 val cardName = it.trim()

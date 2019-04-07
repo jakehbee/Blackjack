@@ -2,6 +2,8 @@ package com.finn.blackjack
 
 object Dealer : Player(name = "dealer", limit = 0, hand = mutableListOf()) {
 
+    val continueConditions = listOf(!this.hasBlackjack(), !this.hasBust(), this.handValue() <= this.limit && !Sam.hasBlackjack())
+
     fun deal() {
         for (i in 0..1) {
             dealTo(Sam)
@@ -17,12 +19,11 @@ object Dealer : Player(name = "dealer", limit = 0, hand = mutableListOf()) {
 
     }
 
-     fun decideMove() {//TODO: All ifs could have listed conditions
-        if (!this.hasBlackjack() && !this.hasBust() && this.handValue() <= this.limit &&!Sam.hasBlackjack()) {
+    fun decideMove() {//TODO: All ifs could have listed continueConditions
+        if (continueConditions.allAreMet()) {
             requestCard()
             decideMove()
-        }
-         else{
+        } else {
             return
         }
     }
@@ -34,4 +35,9 @@ object Dealer : Player(name = "dealer", limit = 0, hand = mutableListOf()) {
     fun shuffleDeck() {
         Game.deck!!.shuffle()
     }
+
+    private fun List<Boolean>.allAreMet(): Boolean {
+        return !this.contains(false)
+    }
+
 }

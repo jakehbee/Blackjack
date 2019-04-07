@@ -1,34 +1,18 @@
 package com.finn.blackjack
 
-import com.finn.blackjack.GameUtils.Companion.checkForWinner
-import com.finn.blackjack.GameUtils.Companion.readGameFileToCardList
+import com.finn.blackjack.GameUtils.Companion.readGameFileToDeck
 
-object Game { //TODO: Is a separate game class needed?
-    var deck: Deck? = readGameFileToCardList() //TODO:try and break this
+
+object Game {
+
+    lateinit var deck: Deck
     var winner: Player? = null
     var round: Int = 0
+    lateinit var players: MutableList<Player>
 
-    fun playBlackjack() {
-        Dealer.shuffleDeck()
-        Dealer.deal()
-
-        while (winner == null) {
-            continueGame()
-            checkForWinner()
-        }
-        val name = winner!!.name
-        val hand = winner!!.hand.makePretty()
-        println("$name $hand")
+    fun setUp(filePath: String?) {
+        this.deck = readGameFileToDeck(filePath)
     }
 
-    private fun continueGame() {
-        Sam.decideMove()
-        Dealer.decideMove()
-        round += 1
 
-    }
-}
-
-fun MutableList<Card>.makePretty(): String {
-    return this.joinToString { it.name }
 }
