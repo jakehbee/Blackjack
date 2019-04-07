@@ -10,9 +10,14 @@ object Game {
     var round: Int = 0
     lateinit var players: MutableList<Player>
 
-    fun setUp(filePath: String?) {
+    fun setUp(filePath: String) {
         this.deck = readGameFileToDeck(filePath)
+        players = mutableListOf(Sam(), Dealer())
     }
+
+    fun deck(): Deck = this.deck
+    fun sam(): Player = this.players[0]
+    fun dealer(): Player = this.players[1]
 
 
 }

@@ -1,8 +1,5 @@
 package com.finn.blackjack
 
-import com.finn.blackjack.GameUtils.Companion.readGameFileToDeck
-
-
 class Deck {
   lateinit var cards: MutableList<Card>
 }

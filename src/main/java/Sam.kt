@@ -1,10 +1,22 @@
 package com.finn.blackjack
 
-object Sam : Player(name = "sam", limit = 17, hand = mutableListOf()) {
+import com.finn.blackjack.Game.dealer
+import com.finn.blackjack.Game.sam
 
-    fun decideMove() {
-        if (!this.hasBlackjack() && !this.hasBust() && this.handValue() <= this.limit && !Dealer.hasBlackjack()) {
-            requestCard()
+class Sam : Player(name = "sam", limit = 17, hand = mutableListOf()) {
+
+    override fun decideMove() {
+
+        val continueConditions = listOf(
+                !sam().hasBlackjack(),
+                !sam().hasBust(),
+                sam().handValue() < sam().limit,
+                !dealer().hasBlackjack()
+        )
+
+        if (continueConditions.allBooleanConditionsTrue()) {
+            println("Sam continues ${sam().handValue()}")
+            sam().requestCard()
             decideMove()
         } else {
             return

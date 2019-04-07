@@ -10,9 +10,9 @@ open class Player(val name: String,
 
     fun hasBust() = (handValue() > 21)
 
-    fun requestCard() {
-        Dealer.dealTo(this)
-    }
+    fun requestCard() =Dealer.dealTo(this)
+
+    open fun decideMove() {}
 
 
 }

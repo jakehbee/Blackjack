@@ -1,43 +1,45 @@
 package com.finn.blackjack
 
-object Dealer : Player(name = "dealer", limit = 0, hand = mutableListOf()) {
+import com.finn.blackjack.Game.dealer
+import com.finn.blackjack.Game.deck
+import com.finn.blackjack.Game.sam
 
-    val continueConditions = listOf(!this.hasBlackjack(), !this.hasBust(), this.handValue() <= this.limit && !Sam.hasBlackjack())
+class Dealer : Player(name = "dealer", limit = 0, hand = mutableListOf()) {
 
-    fun deal() {
-        for (i in 0..1) {
-            dealTo(Sam)
-            dealTo(Dealer)
-        }
-    }
+    companion object {
 
-    fun dealTo(player: Player) {
-        player.hand.add(drawCard())
-        if (player is Sam) {
-            Dealer.limit = Sam.handValue()
+        fun deal() {
+            for (i in 0..1) {
+                dealTo(sam())
+                dealTo(dealer())
+            }
         }
 
+        fun dealTo(player: Player) = player.hand.add(drawCard())
+
+        private fun drawCard()= deck().cards.removeAt(0)
+
+        fun shuffleDeck()=deck().shuffle()
+
+
     }
 
-    fun decideMove() {//TODO: All ifs could have listed continueConditions
-        if (continueConditions.allAreMet()) {
-            requestCard()
+    override fun decideMove() {
+        dealer().limit = sam().handValue()
+
+        val continueConditions = listOf(
+                !dealer().hasBlackjack(),
+                !dealer().hasBust(),
+                dealer().handValue() <= dealer().limit,
+                !sam().hasBlackjack())
+
+        if (continueConditions.allBooleanConditionsTrue()) {
+            println("Dealer continues ${dealer().handValue()}")
+            dealer().requestCard()
             decideMove()
         } else {
             return
         }
     }
-
-    private fun drawCard(): Card {
-        return Game.deck!!.cards.removeAt(0)
-    }
-
-    fun shuffleDeck() {
-        Game.deck!!.shuffle()
-    }
-
-    private fun List<Boolean>.allAreMet(): Boolean {
-        return !this.contains(false)
-    }
-
 }
+
