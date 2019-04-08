@@ -5,8 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.finn.blackjack</groupId>
     <artifactId>jblackjack</artifactId>
-    <version>1.0-SNAPSHOT</version>
-
+    <version>1.0</version>
 
     <properties>
         <kotlin.version>1.3.21</kotlin.version>

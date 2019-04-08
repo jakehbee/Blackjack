@@ -6,6 +6,8 @@ import com.finn.blackjack.Game
 import com.finn.blackjack.Game.dealer
 import com.finn.blackjack.Game.deck
 import com.finn.blackjack.Game.sam
+import com.finn.blackjack.Game.setUp
+import com.finn.blackjack.Game.winner
 import com.finn.blackjack.GameLogic.Companion.checkForWinner
 import com.finn.blackjack.GameLogic.Companion.playBlackjack
 import org.hamcrest.CoreMatchers
@@ -19,18 +21,18 @@ import test.java.TestUtils.handWithValue
 class GameLogicTest {
 
     @Before
-    fun setup() = Game.setUp()
+    fun setup() = setUp()
 
     @After
     fun tearDown(){
         Game.winner = null //test isolation issue. dealer wins from previous test
     }
 
-
-    @Test //todo: delete
-    fun startGame() {
+    @Test
+    fun normalGame_onePlayerWins() {
         Dealer.shuffleDeck()
         playBlackjack()
+        assertThat(winner == sam() || winner== dealer(), equalTo(true))
     }
 
     @Test
@@ -56,7 +58,7 @@ class GameLogicTest {
     }
 
     @Test
-    fun samAndDealerHaveBlackjack_samWins() {
+    fun samAndDealerHaveBlackjackOnFirstRound_samWins() {
         sam().hand.addAll(TestUtils.handWithValue(21))
         dealer().hand.addAll(TestUtils.handWithValue(21))
         checkForWinner()
@@ -66,7 +68,7 @@ class GameLogicTest {
     }
 
     @Test
-    fun samAndDealerHave22_dealerWins() {
+    fun samAndDealerHave22OnFirstRound_dealerWins() {
         sam().hand.addAll(TestUtils.handWithValue(22))
         dealer().hand.addAll(TestUtils.handWithValue(22))
         checkForWinner()
@@ -77,7 +79,7 @@ class GameLogicTest {
 
     @Test
     fun neitherPlayerHasBlackjack_samStartsDrawing() {
-        Game.setUp("${Game.DEFAULT_DIR}allFives.txt")
+        setUp("${Game.DEFAULT_DIR}allFives.txt")
         sam().hand.addAll(TestUtils.handWithValue(6))
         Game.deck().cards.clear()
         for (i in 0..4) {
@@ -105,8 +107,6 @@ class GameLogicTest {
             assertThat(Game.deck.cards.contains(it), equalTo(false))
         }
     }
-
-
 }
 
 

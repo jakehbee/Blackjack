@@ -3,6 +3,7 @@ package test.java
 import com.finn.blackjack.Game
 import com.finn.blackjack.Game.dealer
 import com.finn.blackjack.Game.sam
+import com.finn.blackjack.Game.setUp
 import com.finn.blackjack.GameLogic.Companion.checkForWinner
 import org.hamcrest.CoreMatchers.equalTo
 import org.hamcrest.MatcherAssert.assertThat
@@ -12,7 +13,7 @@ import org.junit.Test
 class PlayerTest {
 
     @Before
-    fun setup() = Game.setUp()
+    fun setup() = setUp()
 
     @Test
     fun samHasBust_gameEndsWithNoMoreCardsDrawn() {
@@ -20,12 +21,15 @@ class PlayerTest {
         dealer().hand.addAll(TestUtils.handWithValue(12))
         checkForWinner()
         assertThat(Game.winner!!.name, equalTo("dealer"))
+        assertThat(sam().hand.size, equalTo(2))
+        assertThat(dealer().hand.size, equalTo(2))
     }
 
     @Test
     fun samHasBlackjack_samStops() {
         sam().hand.addAll(TestUtils.handWithValue(21))
         sam().decideMove()
+        assertThat(sam().hand.size, equalTo(2))
     }
 
     @Test
@@ -36,7 +40,7 @@ class PlayerTest {
     }
 
     @Test
-    fun dealerHasBlackjack_dealerStops() {
+    fun samHasBlackjack_dealerStops() {
         sam().hand.addAll(TestUtils.handWithValue(21))
         dealer().decideMove()
         assertThat(dealer().hand.size, equalTo(0))
@@ -54,22 +58,14 @@ class PlayerTest {
     fun samScoreBelowLimit_samRequestsCard() {
         sam().hand.addAll(TestUtils.handWithValue(5))
         sam().decideMove()
-        assertThat(sam().hand.size, equalTo(4)) //always 4, deck order is the same
+        assertThat(sam().hand.size, equalTo(4)) //always 4, deck order is the same so he stops at 18
     }
 
     @Test
-    fun playersHaveEqualHandValue_dealerContinues() {
+    fun playersHaveEqualHandValue_dealerDecision_dealerContinues() {
         sam().hand.addAll(TestUtils.handWithValue(11))
         dealer().hand.addAll(TestUtils.handWithValue(11))
         dealer().decideMove()
         assertThat(dealer().hand.size, equalTo(3))
-    }
-
-    @Test
-    fun dealerHasHigherScoreThanSam_dealerStops() {
-        dealer().hand.addAll(TestUtils.handWithValue(9))
-        sam().hand.addAll(TestUtils.handWithValue(6))
-        dealer().decideMove()
-        assertThat(dealer().hand.size, equalTo(2))
     }
 }
