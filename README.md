@@ -4,8 +4,8 @@
 <b>Execution<br/>
 
 The game comes in the form of an executable jar. It can be run by running one of the following commands.
-* java -jar jblackjack-1.0.jar                                                     
-* java -jar jblackjack-1.0.jar C:\path\to\file\myFile.txt                          
+* java -jar JakeFinnBlackjack-1.0.jar                                                     
+* java -jar JakeFinnBlackjack-1.0.jar C:\path\to\file\myFile.txt                          
 
 <p>
 If no file is provided in the initial command, the application will request the user to input a valid file.<br/>
