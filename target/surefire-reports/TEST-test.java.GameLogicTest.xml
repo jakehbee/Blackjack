@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<testsuite tests="7" failures="0" name="test.java.GameLogicTest" time="0.055" errors="0" skipped="0">
+<testsuite tests="7" failures="0" name="test.java.GameLogicTest" time="0.059" errors="0" skipped="0">
   <properties>
     <property name="java.runtime.name" value="Java(TM) SE Runtime Environment"/>
     <property name="java.vm.version" value="11.0.2+9-LTS"/>
     <property name="sun.boot.library.path" value="C:\Program Files\Java\jdk-11.0.2\bin"/>
-    <property name="maven.multiModuleProjectDirectory" value="C:\Users\jakeh\IdeaProjects\JakeFinnBlackjack"/>
+    <property name="maven.multiModuleProjectDirectory" value="C:\Users\jakeh\IdeaProjects\jblackjack"/>
     <property name="java.vm.vendor" value="Oracle Corporation"/>
     <property name="java.vendor.url" value="http://java.oracle.com/"/>
     <property name="guice.disable.misplaced.annotation.check" value="true"/>
@@ -15,7 +15,7 @@
     <property name="user.country" value="US"/>
     <property name="sun.java.launcher" value="SUN_STANDARD"/>
     <property name="java.vm.specification.name" value="Java Virtual Machine Specification"/>
-    <property name="user.dir" value="C:\Users\jakeh\IdeaProjects\JakeFinnBlackjack"/>
+    <property name="user.dir" value="C:\Users\jakeh\IdeaProjects\jblackjack"/>
     <property name="java.vm.compressedOopsMode" value="Zero based"/>
     <property name="java.runtime.version" value="11.0.2+9-LTS"/>
     <property name="java.awt.graphicsenv" value="sun.awt.Win32GraphicsEnvironment"/>
@@ -63,11 +63,11 @@
     <property name="sun.desktop" value="windows"/>
     <property name="sun.cpu.isalist" value="amd64"/>
   </properties>
-  <testcase classname="test.java.GameLogicTest" name="samAndDealerHave22OnFirstRound_dealerWins" time="0.042"/>
+  <testcase classname="test.java.GameLogicTest" name="samAndDealerHave22OnFirstRound_dealerWins" time="0.045"/>
   <testcase classname="test.java.GameLogicTest" name="samHasBlackjack_dealerDoesNot_samWins" time="0.001"/>
   <testcase classname="test.java.GameLogicTest" name="stalemate_samContinues" time="0.002"/>
-  <testcase classname="test.java.GameLogicTest" name="normalGame_onePlayerWins" time="0.004"/>
-  <testcase classname="test.java.GameLogicTest" name="dealCards_unshuffledCardsTakenFromTopOfTheDeck_alternatingOrderWithSamFirst" time="0.002"/>
-  <testcase classname="test.java.GameLogicTest" name="neitherPlayerHasBlackjack_samStartsDrawing" time="0.003"/>
-  <testcase classname="test.java.GameLogicTest" name="samAndDealerHaveBlackjackOnFirstRound_samWins" time="0.001"/>
+  <testcase classname="test.java.GameLogicTest" name="normalGame_onePlayerWins" time="0.006"/>
+  <testcase classname="test.java.GameLogicTest" name="dealCards_unshuffledCardsTakenFromTopOfTheDeck_alternatingOrderWithSamFirst" time="0.001"/>
+  <testcase classname="test.java.GameLogicTest" name="neitherPlayerHasBlackjack_samStartsDrawing" time="0.002"/>
+  <testcase classname="test.java.GameLogicTest" name="samAndDealerHaveBlackjackOnFirstRound_samWins" time="0.002"/>
 </testsuite>
